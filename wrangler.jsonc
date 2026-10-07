@@ -1,0 +1,18 @@
+{
+  // Cloudflare Worker config for buildwithkyial.com
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "buildwithkyial",
+  "main": "worker/index.js",
+  "compatibility_date": "2026-09-01",
+  "workers_dev": true,
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    "run_worker_first": true
+  },
+  // Storage for portfolio, reviews, messages and images.
+  // Cloudflare creates the namespace automatically on the first deploy.
+  "kv_namespaces": [{ "binding": "SITE_KV" }],
+  "observability": { "enabled": true }
+}

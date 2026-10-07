@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Admin | Build with Kyial</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body>
+
+  <!-- Sign in -->
+  <main class="login" id="login-view" hidden>
+    <form class="card login__card" id="login-form">
+      <div class="brand"><span class="brand__mark">K</span> Site admin</div>
+      <h1>Sign in</h1>
+      <label class="field">
+        <span>Password</span>
+        <input type="password" name="password" autocomplete="current-password" required autofocus>
+      </label>
+      <button class="btn btn--primary" type="submit">Sign in</button>
+      <p class="msg" id="login-msg" role="alert"></p>
+    </form>
+  </main>
+
+  <!-- Dashboard -->
+  <div class="app" id="app-view" hidden>
+    <header class="topbar">
+      <div class="brand"><span class="brand__mark">K</span> Site admin</div>
+      <nav class="tabs" role="tablist" aria-label="Sections">
+        <button class="tab" role="tab" data-tab="projects" aria-selected="true">Portfolio</button>
+        <button class="tab" role="tab" data-tab="reviews" aria-selected="false">Reviews <span class="badge" id="badge-reviews" hidden></span></button>
+        <button class="tab" role="tab" data-tab="leads" aria-selected="false">Messages <span class="badge" id="badge-leads" hidden></span></button>
+        <button class="tab" role="tab" data-tab="profile" aria-selected="false">Profile and contacts</button>
+      </nav>
+      <div class="topbar__right">
+        <a class="btn btn--ghost btn--sm" href="/" target="_blank" rel="noopener">View site</a>
+        <button class="btn btn--ghost btn--sm" id="logout" type="button">Sign out</button>
+      </div>
+    </header>
+
+    <main class="panels">
+      <!-- Portfolio -->
+      <section class="panel" id="panel-projects" role="tabpanel">
+        <div class="panel__head">
+          <div>
+            <h1>Portfolio</h1>
+            <p>Projects appear in the “Recent work” section in this order. Use the arrows to reorder.</p>
+          </div>
+          <button class="btn btn--primary" type="button" id="add-project">Add project</button>
+        </div>
+        <div class="list" id="projects-list"></div>
+      </section>
+
+      <!-- Reviews -->
+      <section class="panel" id="panel-reviews" role="tabpanel" hidden>
+        <div class="panel__head">
+          <div>
+            <h1>Reviews</h1>
+            <p>Visitors send reviews from the site. They stay hidden until you approve them.</p>
+          </div>
+          <button class="btn btn--primary" type="button" id="add-review">Add a review</button>
+        </div>
+        <h2 class="sub">Waiting for approval</h2>
+        <div class="list" id="reviews-pending"></div>
+        <h2 class="sub">Published</h2>
+        <div class="list" id="reviews-approved"></div>
+      </section>
+
+      <!-- Messages -->
+      <section class="panel" id="panel-leads" role="tabpanel" hidden>
+        <div class="panel__head">
+          <div>
+            <h1>Messages</h1>
+            <p>Everything sent through the contact form, newest first.</p>
+          </div>
+        </div>
+        <div class="list" id="leads-list"></div>
+      </section>
+
+      <!-- Profile -->
+      <section class="panel" id="panel-profile" role="tabpanel" hidden>
+        <div class="panel__head">
+          <div>
+            <h1>Profile and contacts</h1>
+            <p>Leave a field empty to hide it on the site.</p>
+          </div>
+        </div>
+
+        <form class="card form" id="settings-form">
+          <h2 class="sub">Photo</h2>
+          <div class="photo-row">
+            <div class="photo-preview" id="photo-preview"><span>No photo</span></div>
+            <div class="photo-actions">
+              <label class="btn btn--ghost btn--sm file-btn">Upload photo<input type="file" accept="image/*" id="photo-input"></label>
+              <button class="btn btn--ghost btn--sm" type="button" id="photo-remove">Remove</button>
+              <p class="hint">Portrait, at least 800 × 1000 px. It's resized and compressed automatically.</p>
+            </div>
+          </div>
+
+          <h2 class="sub">Availability</h2>
+          <label class="check"><input type="checkbox" name="available"> Taking new projects (green dot in the hero)</label>
+          <label class="field"><span>Status text</span>
+            <input name="availabilityText" maxlength="120" placeholder="Taking new projects. Remote, working US hours.">
+          </label>
+
+          <h2 class="sub">Contacts</h2>
+          <div class="grid2">
+            <label class="field"><span>Email</span><input name="email" type="email" placeholder="hello@buildwithkyial.com"></label>
+            <label class="field"><span>Phone</span><input name="phone" placeholder="+1 555 010 0000"></label>
+            <label class="field"><span>WhatsApp number</span><input name="whatsapp" placeholder="+996 555 000 000"></label>
+            <label class="field"><span>Telegram username</span><input name="telegram" placeholder="@username"></label>
+          </div>
+
+          <h2 class="sub">Profiles</h2>
+          <div class="grid2">
+            <label class="field"><span>LinkedIn URL</span><input name="linkedin" type="url" placeholder="https://www.linkedin.com/in/…"></label>
+            <label class="field"><span>GitHub URL</span><input name="github" type="url" placeholder="https://github.com/…"></label>
+            <label class="field"><span>Upwork URL</span><input name="upwork" type="url" placeholder="https://www.upwork.com/freelancers/…"></label>
+            <label class="field"><span>Instagram URL</span><input name="instagram" type="url" placeholder="https://instagram.com/…"></label>
+          </div>
+
+          <h2 class="sub">Booking and email delivery</h2>
+          <label class="field"><span>Calendly link (or another booking page)</span>
+            <input name="calendly" type="url" placeholder="https://calendly.com/…/20min">
+            <small class="hint">When set, every “Book a free call” button opens this page.</small>
+          </label>
+          <label class="field"><span>Web3Forms access key</span>
+            <input name="web3formsKey" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" autocomplete="off">
+            <small class="hint">Get a free key at web3forms.com with the email where you want to receive messages. Messages are also saved in the Messages tab.</small>
+          </label>
+
+          <div class="form__foot">
+            <button class="btn btn--primary" type="submit">Save changes</button>
+            <span class="msg" id="settings-msg" role="status"></span>
+          </div>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <!-- Project editor -->
+  <dialog class="dialog" id="project-dialog" aria-labelledby="pd-title">
+    <form class="form" id="project-form" method="dialog">
+      <div class="dialog__head">
+        <h2 id="pd-title">Add project</h2>
+        <button class="x" type="button" data-close aria-label="Close">×</button>
+      </div>
+      <input type="hidden" name="id">
+      <input type="hidden" name="image">
+
+      <div class="image-drop" id="image-drop">
+        <div class="image-drop__preview" id="image-preview"><span>No image yet</span></div>
+        <div>
+          <label class="btn btn--ghost btn--sm file-btn">Choose screenshot<input type="file" accept="image/*" id="image-input"></label>
+          <button class="btn btn--ghost btn--sm" type="button" id="image-remove">Remove</button>
+          <p class="hint">Landscape screenshot, ideally 1600 × 1000 px. Shown at a 16:10 ratio.</p>
+        </div>
+      </div>
+
+      <label class="field"><span>Project name *</span><input name="title" required maxlength="120" placeholder="Bright Dental"></label>
+      <div class="grid3">
+        <label class="field"><span>Category</span>
+          <select name="category" id="category-select"></select>
+        </label>
+        <label class="field"><span>Client or industry</span><input name="client" maxlength="80" placeholder="Dental clinic, Austin TX"></label>
+        <label class="field"><span>Year</span><input name="year" maxlength="10" placeholder="2026"></label>
+      </div>
+      <label class="field"><span>Short summary (on the card)</span><input name="summary" maxlength="240" placeholder="Booking-focused website for a family dental clinic."></label>
+      <label class="field"><span>Result (highlighted)</span><input name="result" maxlength="120" placeholder="Online bookings doubled in 3 months">
+        <small class="hint">Only use numbers the client confirmed.</small>
+      </label>
+      <label class="field"><span>Full description (in the project window)</span><textarea name="description" rows="5" maxlength="4000" placeholder="The problem, what you built, and what changed for the client."></textarea></label>
+      <div class="grid2">
+        <label class="field"><span>Tools (comma separated)</span><input name="tags" placeholder="Next.js, Tailwind, Sanity"></label>
+        <label class="field"><span>Live site URL</span><input name="url" type="url" placeholder="https://"></label>
+      </div>
+      <label class="check"><input type="checkbox" name="hidden"> Hide this project on the site (draft)</label>
+
+      <div class="form__foot">
+        <button class="btn btn--primary" type="submit" value="save">Save project</button>
+        <button class="btn btn--ghost" type="button" data-close>Cancel</button>
+        <span class="msg" id="project-msg" role="status"></span>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Review editor -->
+  <dialog class="dialog" id="review-dialog" aria-labelledby="rd-title">
+    <form class="form" id="review-form" method="dialog">
+      <div class="dialog__head">
+        <h2 id="rd-title">Add a review</h2>
+        <button class="x" type="button" data-close aria-label="Close">×</button>
+      </div>
+      <p class="hint">Only add reviews that a client actually gave you, for example by email or on Upwork, and with their permission.</p>
+      <input type="hidden" name="id">
+      <div class="grid2">
+        <label class="field"><span>Client name *</span><input name="name" required maxlength="80"></label>
+        <label class="field"><span>Role and company</span><input name="role" maxlength="100" placeholder="Owner, Bright Dental"></label>
+      </div>
+      <label class="field"><span>Rating</span>
+        <select name="rating"><option>5</option><option>4</option><option>3</option><option>2</option><option>1</option></select>
+      </label>
+      <label class="field"><span>Review text *</span><textarea name="text" rows="5" required maxlength="1200"></textarea></label>
+      <label class="check"><input type="checkbox" name="approved" checked> Publish now</label>
+      <div class="form__foot">
+        <button class="btn btn--primary" type="submit">Save review</button>
+        <button class="btn btn--ghost" type="button" data-close>Cancel</button>
+        <span class="msg" id="review-msg" role="status"></span>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script type="module" src="/admin/admin.js"></script>
+</body>
+</html>
